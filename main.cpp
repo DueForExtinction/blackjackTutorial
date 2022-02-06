@@ -41,6 +41,13 @@ int main() {
         else if(userOption == 'p'){
             gameOver = false;
         }
+<<<<<<< Updated upstream
+=======
+    }
+
+    while(gameOver == false){
+
+>>>>>>> Stashed changes
     }
 
     while(gameOver == false){
