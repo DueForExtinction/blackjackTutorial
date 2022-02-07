@@ -1,12 +1,18 @@
 #include <iostream>
+#include <vector>
+#include <ctime>
+#include <sstream>
+#include <array>
+#include <bits/stdc++.h>
 using namespace std;
 
+// The next two functions are just so I had something to work with and will be replaced with whatever you come up with.
 void BuildTutorialMenu() { // Add options if needed.
     cout << "Play (p)" << endl;
     cout << "Quite (q)" << endl;
     cout << "Tutorial (?)" << endl;
 }
-
+// This one too.
 void aboutTheGame(){
     char userOption = ' ';
     system("CLS");
@@ -23,12 +29,71 @@ void aboutTheGame(){
     }
 }
 
+// This function adds all the cards to the game. I'm working with only the standard deck size of 52. I don't think that we will need more. Currently there are no aces.
+void fillVectorOfCards(vector<string>& newCards){
+    stringstream stream;
+    string text;
+    int pipDiamonds = 2;
+    int pipClubs = 2;
+    int pipHearts = 2;
+    int pipSpades = 2;
+    string faceCards[] {"King of diamonds", "Queen of diamonds", "Jack of diamonds", "King of hearts", "Queen of hearts", "Jack of hearts", "King of spades", "Queen of spades", "Jack of spades", "King of clubs", "Queen of clubs", "Jack of clubs"};
+    int N = sizeof(faceCards) / sizeof (faceCards[0]);
+
+    for(int i = 0; i < 39; ++i){
+        if((i > -1) && (i <=8)){
+           stream.str(" ");
+           stream.clear();
+           stream << pipDiamonds;
+           stream >> text;
+           newCards.push_back(text + " of diamonds");
+           pipDiamonds += 1;
+        }
+        else if ((i >= 9) && (i <= 17)){
+            stream.str(" ");
+            stream.clear();
+            stream << pipClubs;
+            stream >> text;
+            newCards.push_back(text + " of clubs");
+            pipClubs += 1;
+        }
+        else if ((i >= 19) && (i <= 27)){
+            stream.str(" ");
+            stream.clear();
+            stream << pipHearts;
+            stream >> text;
+            newCards.push_back(text + " of hearts");
+            pipHearts += 1;
+        }
+        else if ((i >=29) && (i <=37)){
+            stream.str(" ");
+            stream.clear();
+            stream << pipSpades;
+            stream >> text;
+            newCards.push_back(text + " of spades");
+            pipSpades += 1;
+        }
+    }
+    newCards.insert(newCards.end(), faceCards, faceCards + N);
+
+}
+
 int main() {
     char userOption =' ';
-    // Variables that I think will be useful.
+    // Variables that I think will be useful. It's not complete and theres currently no way to actually play the game as this currently is.
     bool gameOver = true;
     int cardTally = 50;
     int runningTotal = 0;
+    int randomCardNumber;
+    stringstream stream;
+    string text;
+    vector <string> Cards;
+    fillVectorOfCards(Cards);
+
+    for (unsigned int i = 0; i < Cards.size(); ++i){
+        cout << Cards.at(i) << endl;
+        cout << "Nothing here." << endl;
+    }
 
     while ((userOption != 'p') && (userOption != 'q')){
         system("CLS");
@@ -40,17 +105,30 @@ int main() {
         }
         else if(userOption == 'p'){
             gameOver = false;
+
         }
-<<<<<<< Updated upstream
-=======
+
     }
 
-    while(gameOver == false){
 
->>>>>>> Stashed changes
-    }
-
+    // This just prints out all the cards. It's basically a bug check.
     while(gameOver == false){
+        srand(time(0));
+        cout << "random numbers:" << endl;
+        for (int i = 0; i < 2; ++i){
+            randomCardNumber = rand()%52;
+           cout << randomCardNumber << endl;
+        }
+        for (unsigned int i = 0; i < Cards.size(); ++i){
+            cout << Cards.at(i) << endl;
+        }
+        cout << "Deck size is " << Cards.size() << endl;
+        cout << "exit loop?(p)" << endl;
+        cin >> userOption;
+        if (userOption == 'p'){
+            gameOver = true;
+        }
+
 
     }
 
