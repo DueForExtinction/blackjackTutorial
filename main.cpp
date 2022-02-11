@@ -39,6 +39,8 @@ void fillVectorOfCards(vector<string>& newCards){
     int pipSpades = 2;
     string faceCards[] {"King of diamonds", "Queen of diamonds", "Jack of diamonds", "King of hearts", "Queen of hearts", "Jack of hearts", "King of spades", "Queen of spades", "Jack of spades", "King of clubs", "Queen of clubs", "Jack of clubs"};
     int N = sizeof(faceCards) / sizeof (faceCards[0]);
+    string AceCards [] {"Ace of diamonds", "Ace of hearts", "Ace of spades", "Ace of clubes"};
+    int J = sizeof (AceCards)/sizeof (AceCards[0]);
 
     for(int i = 0; i < 39; ++i){
         if((i > -1) && (i <=8)){
@@ -75,25 +77,98 @@ void fillVectorOfCards(vector<string>& newCards){
         }
     }
     newCards.insert(newCards.end(), faceCards, faceCards + N);
+    newCards.insert(newCards.end(), AceCards, AceCards + J);
 
+}
+
+int findCardValues(vector<string>& Cards, vector<int>& playerHand, vector<int>& dealerHand, int newPlayerTotal){
+    int value;
+    int handValue = 0;
+    for(unsigned int i = 0; i < playerHand.size(); ++i){
+        value = 0;
+        value = Cards.at(playerHand.at(i)).find("2", 0);
+        if(value != -1){
+            handValue += 2;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("3", 0);
+        if(value != -1){
+            handValue += 3;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("4", 0);
+        if(value != -1){
+            handValue += 4;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("5", 0);
+        if(value != -1){
+            handValue += 5;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("6", 0);
+        if(value != -1){
+            handValue += 6;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("7", 0);
+        if(value != -1){
+            handValue += 7;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("8", 0);
+        if(value != -1){
+            handValue += 8;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("9", 0);
+        if(value != -1){
+            handValue += 9;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("10", 0);
+        if(value != -1){
+            handValue += 10;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("King", 0);
+        if(value != -1){
+            handValue += 10;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("Queen", 0);
+        if(value != -1){
+            handValue += 10;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("Jack", 0);
+        if(value != -1){
+            handValue += 10;
+            value = 0;
+        }
+        value = Cards.at(playerHand.at(i)).find("Ace", 0);
+        if(value != -1){
+            handValue += 11;
+            value = 0;
+        }
+
+    }
+    return handValue;
 }
 
 int main() {
     char userOption =' ';
     // Variables that I think will be useful. It's not complete and theres currently no way to actually play the game as this currently is.
     bool gameOver = true;
-    int cardTally = 50;
-    int runningTotal = 0;
+    int playerTotal = 0;
+    int dealerTotal = 0;
+    vector <int> playerHand;
+    vector <int> dealerHand;
     int randomCardNumber;
     stringstream stream;
     string text;
     vector <string> Cards;
     fillVectorOfCards(Cards);
-
-    for (unsigned int i = 0; i < Cards.size(); ++i){
-        cout << Cards.at(i) << endl;
-        cout << "Nothing here." << endl;
-    }
 
     while ((userOption != 'p') && (userOption != 'q')){
         system("CLS");
@@ -110,26 +185,37 @@ int main() {
 
     }
 
+    playerHand.clear();
+    dealerHand.clear();
+    srand(time(0));
+    for (int i = 0; i < 2; ++i){
+        randomCardNumber = rand()%52;
+        playerHand.push_back(randomCardNumber);
+    }
+    randomCardNumber = 0;
+    for (int i = 0; i < 2; ++i){
+        randomCardNumber = rand()%52;
+        dealerHand.push_back(randomCardNumber);
+    }
 
-    // This just prints out all the cards. It's basically a bug check.
+    findCardValues(Cards, playerHand, dealerHand, playerTotal);
+
+    // Some more structure is needed here but for the working model I don't think it will be that big of a deal.
     while(gameOver == false){
-        srand(time(0));
-        cout << "random numbers:" << endl;
-        for (int i = 0; i < 2; ++i){
-            randomCardNumber = rand()%52;
-           cout << randomCardNumber << endl;
+        cout << "Your hand is: ";
+        for (unsigned int i = 0; i < playerHand.size(); ++i){
+            cout << Cards.at(playerHand.at(i)) << " ";
         }
-        for (unsigned int i = 0; i < Cards.size(); ++i){
-            cout << Cards.at(i) << endl;
+        cout << endl << "The face up dealer card is: ";
+        for (unsigned int i = 0; i < 1; ++i){
+            cout << Cards.at(dealerHand.at(i)) << endl;
         }
-        cout << "Deck size is " << Cards.size() << endl;
-        cout << "exit loop?(p)" << endl;
+        // Hitting, staying, and splitting still need to be added.
+        cout << endl << "What would you like to do?" << endl;
         cin >> userOption;
-        if (userOption == 'p'){
+        if (userOption == 'q'){
             gameOver = true;
         }
-
-
     }
 
 
